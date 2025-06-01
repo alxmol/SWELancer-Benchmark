@@ -77,4 +77,24 @@ def nanoeval_entrypoint(entry: Coroutine[Any, Any, None]) -> None:
     # 2048 fds already.
     resource.setrlimit(resource.RLIMIT_NOFILE, (131_072, 131_072))
 
+  # resource.setrlimit(resource.RLIMIT_NOFILE, (131_072, 131_072)) # Old hardcoded version
+
+    # Adaptive RLIMIT_NOFILE handling
+   # try:
+   #     current_soft_limit, current_hard_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
+        
+        # Set the desired new soft limit, but not exceeding the current hard limit or a predefined cap.
+   #     desired_soft_limit = 131_072
+   #     new_soft_limit = min(desired_soft_limit, current_hard_limit)
+        
+        # Set the new soft limit, keeping the existing hard limit.
+   #     resource.setrlimit(resource.RLIMIT_NOFILE, (new_soft_limit, current_hard_limit))
+   #         logger.info(
+   #         f"RLIMIT_NOFILE: Original soft={current_soft_limit}, hard={current_hard_limit}. "
+   #         f"Set to soft={new_soft_limit}, hard={current_hard_limit}"
+   #     )
+   # except Exception as e:
+   #     logger.warning(f"Failed to set RLIMIT_NOFILE adaptively: {e}. Using OS defaults.")
+
+
     asyncio.run(_main_process_async_entrypoint(entry))
